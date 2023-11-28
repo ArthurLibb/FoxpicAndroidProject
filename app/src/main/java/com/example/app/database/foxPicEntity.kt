@@ -10,20 +10,19 @@ data class foxPicEntity(
     val id: Int = 0,
     val name : String = "",
     val link : String = ""
-) {
+)
 
-    fun foxPicEntity.asDomainFoxPic(): FoxPic{
-        return FoxPic(this.name, this.link)
-    }
+fun foxPicEntity.asDomainFoxPic(): FoxPic{
+    return FoxPic(this.name, this.link)
+}
 
-    fun FoxPic.asEntity(): foxPicEntity{
-        return foxPicEntity(name=this.name, link = this.link)
-    }
+fun FoxPic.asEntity(): foxPicEntity{
+    return foxPicEntity(name=this.name, link = this.link)
+}
 
-    fun List<FoxPic>.asDomainFoxpics() : List<FoxPic>{
-        var list = this.map{
-            FoxPic(it.name, it.link)
-        }
-        return list
+fun List<FoxPic>.asDomainFoxpics() : List<FoxPic>{
+    var list = this.map{
+        FoxPic(it.name, it.link)
     }
+    return list
 }

@@ -12,7 +12,7 @@ interface AppContainer {
     val foxPicRepo : FoxPicRepository
 }
 
-class DefaultAppContainer(private context: Context) : AppContainer{
+class DefaultAppContainer(private val context: Context) : AppContainer{
     private val baseURL = "https://randomfox.ca/floof/?ref=apilist.fun"
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(
@@ -23,7 +23,7 @@ class DefaultAppContainer(private context: Context) : AppContainer{
         retrofit.create(FoxPicService::class.java)
     }
 
-    override val tasksRepository: FoxPicRepository by lazy {
+    override val foxPicRepo: FoxPicRepository by lazy {
         OfflineFoxPicRepository(RoomDB.getInstance(context = context).foxPicDao(), retrofitService)
     }
 

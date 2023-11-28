@@ -1,5 +1,6 @@
 package com.example.app.data
 
+import com.example.app.database.asEntity
 import com.example.app.database.daos.FoxPicDao
 import com.example.app.model.FoxPic
 import com.example.app.network.service.FoxPicService
@@ -10,6 +11,7 @@ interface FoxPicRepository{
     suspend fun getFoxPic(): FoxPic
     suspend fun getFoxpics(): List<FoxPic>
     suspend fun addFoxPic(foxpic : FoxPic)
+    suspend fun deleteFoxPic(foxPic: FoxPic)
 }
 
 class OfflineFoxPicRepository (private val foxPicDao: FoxPicDao,private val foxPicSerivice : FoxPicService) : FoxPicRepository{
@@ -19,6 +21,10 @@ class OfflineFoxPicRepository (private val foxPicDao: FoxPicDao,private val foxP
 
     override suspend fun addFoxPic(foxPic: FoxPic){
         AddFoxPicTORoomDb(foxPic)
+    }
+
+    override suspend fun deleteFoxPic(foxPic: FoxPic) {
+        foxPicDao.deleteFoxPic(foxPic.asEntity())
     }
 
     override suspend fun getFoxpics(): Flow<List<FoxPic>> {
