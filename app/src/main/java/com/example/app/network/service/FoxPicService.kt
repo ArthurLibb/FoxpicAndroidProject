@@ -1,12 +1,23 @@
 package com.example.app.network.service
 
 import com.example.app.model.FoxPic
+import com.example.app.network.ApiFoxPic
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import retrofit2.Response
 import retrofit2.http.GET
 
 interface FoxPicService{
 
     @GET
-    suspend fun getFoxPic(): Response<FoxPic>
+    suspend fun getFoxPic(): ApiFoxPic
 
+    @GET
+    suspend fun  getAllPics(): List<ApiFoxPic>
+
+
+}
+
+fun FoxPicService.getAsFlow(): Flow<List<ApiFoxPic>> = flow{
+    emit(getAllPics())
 }

@@ -1,4 +1,4 @@
-package com.example.app.network.service
+package com.example.app.network
 
 import com.example.app.model.FoxPic
 import kotlinx.coroutines.flow.Flow
