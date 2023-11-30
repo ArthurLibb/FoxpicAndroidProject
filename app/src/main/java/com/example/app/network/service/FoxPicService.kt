@@ -12,12 +12,8 @@ interface FoxPicService{
     @GET
     suspend fun getFoxPic(): ApiFoxPic
 
-    @GET
-    suspend fun  getAllPics(): List<ApiFoxPic>
-
-
 }
 
-fun FoxPicService.getAsFlow(): Flow<List<ApiFoxPic>> = flow{
-    emit(getAllPics())
+fun FoxPicService.getAsFlow(): Flow<ApiFoxPic> = flow{
+    emit(getFoxPic())
 }

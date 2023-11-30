@@ -21,5 +21,5 @@ interface FoxPicDao {
     suspend fun addFoxPic(foxPic: foxPicEntity): Long
 
     @Query("SELECT * FROM foxpics order by name ASC")
-    suspend fun getAll(): Flow<List<foxPicEntity>>
+    fun getAll(): Flow<List<foxPicEntity>>
 }

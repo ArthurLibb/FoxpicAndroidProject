@@ -1,4 +1,4 @@
-package com.example.app.ui
+package com.example.app.ui.overviewScreen
 
 import com.example.app.model.FoxPic
 

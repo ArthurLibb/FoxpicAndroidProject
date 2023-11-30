@@ -20,7 +20,7 @@ fun FoxPic.asEntity(): foxPicEntity{
     return foxPicEntity(name=this.name, link = this.link)
 }
 
-fun List<FoxPic>.asDomainFoxpics() : List<FoxPic>{
+fun List<foxPicEntity>.asDomainFoxpics() : List<FoxPic>{
     var list = this.map{
         FoxPic(it.name, it.link)
     }

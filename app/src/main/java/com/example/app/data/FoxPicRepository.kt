@@ -1,5 +1,7 @@
 package com.example.app.data
 
+import com.example.app.database.asDomainFoxPic
+import com.example.app.database.asDomainFoxpics
 import com.example.app.database.asEntity
 import com.example.app.database.daos.FoxPicDao
 import com.example.app.model.FoxPic
@@ -8,15 +10,18 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 interface FoxPicRepository{
-    suspend fun getFoxPic(): FoxPic
-    suspend fun getFoxpics(): List<FoxPic>
+    fun getFoxPic(id: String): Flow<FoxPic>
+    fun getFoxpics(): Flow<List<FoxPic>>
     suspend fun addFoxPic(foxpic : FoxPic)
     suspend fun deleteFoxPic(foxPic: FoxPic)
+    suspend fun getRandomFoxPic()
 }
 
 class OfflineFoxPicRepository (private val foxPicDao: FoxPicDao,private val foxPicSerivice : FoxPicService) : FoxPicRepository{
-    override suspend fun getFoxPic(): FoxPic{
-            return foxPicSerivice.getFoxPic().body()!!
+    override fun getFoxPic(id : String): Flow<FoxPic>{
+            return foxPicDao.getFoxPic(id.toInt()).map{
+                it.asDomainFoxPic()
+            }
     }
 
     override suspend fun addFoxPic(foxPic: FoxPic){
@@ -27,13 +32,17 @@ class OfflineFoxPicRepository (private val foxPicDao: FoxPicDao,private val foxP
         foxPicDao.deleteFoxPic(foxPic.asEntity())
     }
 
-    override suspend fun getFoxpics(): Flow<List<FoxPic>> {
+    override suspend fun getRandomFoxPic() {
+        foxPicSerivice.getFoxPic()
+    }
+
+    override fun getFoxpics(): Flow<List<FoxPic>> {
         return foxPicDao.getAll().map {
-            it.
+            it.asDomainFoxpics()
         }
     }
 
     private suspend fun AddFoxPicTORoomDb(foxPic: FoxPic){
-        foxPicDao.addFoxPic(foxPic)
+        foxPicDao.addFoxPic(foxPic.asEntity())
     }
 }

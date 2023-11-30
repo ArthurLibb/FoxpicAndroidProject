@@ -15,29 +15,22 @@ import com.example.app.ui.theme.GreenBlueDark
 import com.example.app.ui.theme.GreenBlueDarkLess
 
 @Composable
-fun AppBar(goFoxPic: () -> Unit() , )(
-){
+fun AppBar(goHome: () -> Unit){
          BottomAppBar(
              containerColor = GreenBlueDark,
              actions = {
-                    IconButton(onClick = goHome){
-                        Icon(Icons.Filled.Home, contentDescription = "home button")
-                    }
+                 IconButton(onClick = { goHome }){
+                     Icon(Icons.Filled.Home, contentDescription = "home button")
+                 }
              },
+
              floatingActionButton = {
                  FloatingActionButton(
                      onClick = { },
                      containerColor = GreenBlueDarkLess
-                     ) {
+                 ) {
                      Icon(Icons.Filled.Add, contentDescription = "add buttons")
                  }
              }
          )
-}
-
-@Preview
-@Composable
-fun AppBarPreview(){
-    val indd = null
-    AppBar(indd)
 }
