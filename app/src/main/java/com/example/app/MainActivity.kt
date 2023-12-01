@@ -1,4 +1,4 @@
-package com.example.app.ui
+package com.example.app
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import com.example.app.ui.AndroidApp
 import com.example.app.ui.theme.AppTheme
 
 class MainActivity : ComponentActivity() {

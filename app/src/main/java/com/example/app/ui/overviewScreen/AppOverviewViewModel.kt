@@ -50,15 +50,15 @@ class AppOverviewViewModel(private val repo : FoxPicRepository) : ViewModel(){
     }
 
     companion object{
-        private var Instance : AppOverviewViewModel? = null
+        private var instance : AppOverviewViewModel? = null
         val Factory : ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                if(Instance == null){
+                if(instance == null){
                     val application = (this[APPLICATION_KEY] as AppApplication)
                     val foxPicRepo= application.container.foxPicRepo
-                    Instance = AppOverviewViewModel(repo = foxPicRepo)
+                    instance = AppOverviewViewModel(repo = foxPicRepo)
                 }
-                Instance!!
+                instance!!
             }
         }
     }

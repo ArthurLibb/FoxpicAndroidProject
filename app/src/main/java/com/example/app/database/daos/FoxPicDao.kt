@@ -5,21 +5,21 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.app.database.foxPicEntity
+import com.example.app.database.FoxPicEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FoxPicDao {
 
     @Query("SELECT * FROM foxpics WHERE id = :id")
-    fun getFoxPic(id : Int): Flow<foxPicEntity>
+    fun getFoxPic(id : Int): Flow<FoxPicEntity>
 
     @Delete
-    suspend fun deleteFoxPic(foxpic : foxPicEntity)
+    suspend fun deleteFoxPic(foxpic : FoxPicEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addFoxPic(foxPic: foxPicEntity): Long
+    suspend fun addFoxPic(foxPic: FoxPicEntity): Long
 
     @Query("SELECT * FROM foxpics order by name ASC")
-    fun getAll(): Flow<List<foxPicEntity>>
+    fun getAll(): Flow<List<FoxPicEntity>>
 }
