@@ -1,4 +1,4 @@
-package com.example.app.ui
+package com.example.app.ui.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -11,13 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
+import com.example.app.ui.theme.FoxRed
 import com.example.app.ui.theme.GreenBlueDark
 import com.example.app.ui.theme.GreenBlueDarkLess
 
 @Composable
-fun AppBar(goHome: () -> Unit){
+fun AppBar(goHome: () -> Unit, getNewFoxPic: () -> Unit){
          BottomAppBar(
-             containerColor = GreenBlueDark,
+             containerColor = FoxRed,
              actions = {
                  IconButton(onClick = { goHome }){
                      Icon(Icons.Filled.Home, contentDescription = "home button")
@@ -26,8 +27,8 @@ fun AppBar(goHome: () -> Unit){
 
              floatingActionButton = {
                  FloatingActionButton(
-                     onClick = { },
-                     containerColor = GreenBlueDarkLess
+                     onClick = {getNewFoxPic },
+                     containerColor = FoxRed
                  ) {
                      Icon(Icons.Filled.Add, contentDescription = "add buttons")
                  }

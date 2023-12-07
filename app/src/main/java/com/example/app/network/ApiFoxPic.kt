@@ -7,28 +7,15 @@ import kotlinx.coroutines.flow.map
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ApiFoxPic(val name : String, val link : String) {
-
-}
-
-/*fun Flow<List<ApiFoxPic>>.asDomainObjects(): Flow<List<FoxPic>>{
-    var lijst = this.map {
-        it.asDomainObjects()
-    }
-    return lijst
-}*/
+data class ApiFoxPic(val name : String, val link : String) {}
 
 fun List<ApiFoxPic>.asDomainObjects(): List<FoxPic>{
     var list = this.map {
-        FoxPic(it.name, it.link)
+        it.asDomainObject()
     }
     return list
 }
 
-suspend fun Flow<ApiFoxPic>.asDomainObject(): FoxPic{
-    var domainobj : FoxPic? = null
-    this.collect{
-        domainobj =  FoxPic(name = it.name, link = it.link)
-    }
-    return domainobj!!
+fun ApiFoxPic.asDomainObject(): FoxPic{
+    return FoxPic(name, link)
 }

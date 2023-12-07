@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.app.database.daos.FoxPicDao
 import com.example.app.model.FoxPic
 
-@Database(entities = [FoxPic::class], version =4, exportSchema = false)
+@Database(entities = [FoxPicEntity::class], version =4, exportSchema = false)
 abstract class RoomDB() : RoomDatabase() {
 
     abstract fun foxPicDao() : FoxPicDao

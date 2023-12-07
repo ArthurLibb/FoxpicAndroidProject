@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.app.ui.components.AppBar
 import com.example.app.ui.navigation.FoxPicNavigationType
 import com.example.app.ui.navigation.OverviewScreen
 import com.example.app.ui.navigation.navComponent
@@ -35,6 +36,9 @@ fun AndroidApp(windowSize: WindowWidthSizeClass,navController: NavHostController
             inclusive = false
         )
     }
+    val addNewFoxPic : () -> Unit = {
+        navController.navigate(OverviewScreen.AddFoxPic.name){launchSingleTop = true}
+    }
 val navType : FoxPicNavigationType
     when(windowSize){
         WindowWidthSizeClass.Compact -> {
@@ -50,7 +54,7 @@ val navType : FoxPicNavigationType
 
     Scaffold(
         containerColor = Color.Transparent,
-        bottomBar = { AppBar(goHome)},
+        bottomBar = { AppBar(goHome, addNewFoxPic) },
     ){
         innerPadding ->
         navComponent(navController, modifier = Modifier.padding(innerPadding))

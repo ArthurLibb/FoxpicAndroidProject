@@ -12,3 +12,7 @@ val Pink40 = Color(0xFF7D5260)
 
 val GreenBlueDark = Color(8, 69, 70, 255)
 val GreenBlueDarkLess = Color(7, 168, 128, 255)
+
+val FoxRed = Color(198, 76, 54)
+val OrangeFox = Color(228, 119, 85, 255)
+
