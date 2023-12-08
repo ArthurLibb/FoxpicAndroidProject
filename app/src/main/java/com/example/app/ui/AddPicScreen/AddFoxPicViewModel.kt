@@ -30,6 +30,8 @@ class AddFoxPicViewModel(private val service: FoxPicService, private val repo : 
         getNewFoxPic()
     }
 
+
+
     private fun getNewFoxPic(){
         viewModelScope.launch {
             try {
@@ -59,9 +61,9 @@ class AddFoxPicViewModel(private val service: FoxPicService, private val repo : 
         }
     }
 
-    fun addFoxPic(){
+    fun addFoxPic(name : String){
         viewModelScope.launch {
-            val newPic = FoxPic(_uifoxPicState.value.newPicName, _uifoxPicState.value.newPicLink)
+            val newPic = FoxPic(name, _uifoxPicState.value.newPicLink)
             repo.addFoxPic(newPic)
         }
     }

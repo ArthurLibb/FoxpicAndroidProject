@@ -9,6 +9,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -23,6 +25,9 @@ fun AddFoxPicSreen(viewmodel : AddFoxPicViewModel = viewModel(),
                    modifier: Modifier = Modifier,
                    addPicDialogVisable: Boolean = false){
 
+    val openAlertDialog = remember {
+        mutableStateOf(false)
+    }
     val foxPicState by viewmodel.uifoxPicState.collectAsState()
     val apiState = viewmodel.ApiState
 
@@ -35,7 +40,9 @@ fun AddFoxPicSreen(viewmodel : AddFoxPicViewModel = viewModel(),
                 onPicSaved = {viewmodel.showAddDialog()})
         }
         if(addPicDialogVisable){
-            AddPicDialog(setNamePic = { viewmodel.setNamePic(it)})
+            AddPicDialog(
+                onDismissRequest = {openAlertDialog.value = false},
+                onConfim = {viewmodel.addFoxPic(it)})
         }
     }
 }
