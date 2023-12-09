@@ -26,7 +26,7 @@ class AddFoxPicViewModel(private val repo : FoxPicRepository) : ViewModel() {
     private val _uifoxPicState = MutableStateFlow(FoxPicState())
     val uifoxPicState : StateFlow<FoxPicState> = _uifoxPicState.asStateFlow()
 
-    lateinit var picState: StateFlow<PicState>
+    lateinit var picState : StateFlow<PicState>
 
     var apiState : RandomFoxPicApiState by mutableStateOf(RandomFoxPicApiState.Loading)
         private set
@@ -35,40 +35,27 @@ class AddFoxPicViewModel(private val repo : FoxPicRepository) : ViewModel() {
     }
 
     private fun getNewFoxPic(){
-        viewModelScope.launch {
             try {
-                picState = repo.getRandomFoxPic().map{
-                    Log.d("values", it.toString())
-                    PicState(FoxPic("", it.link))
 
-                }.stateIn(
-                    scope = viewModelScope,
-                    started = SharingStarted.WhileSubscribed(1_000L),
-                    initialValue = PicState(),
-                )
-                Log.d("values","Values pic : " + picState.value.picObj.toString())
+                viewModelScope.launch {
+                    picState = repo.getRandomFoxPic().map{
+                        PicState(it)
+                    }.stateIn(
+                        scope = viewModelScope,
+                        started = SharingStarted.WhileSubscribed(),
+                        initialValue = PicState(),
+                    )
+                }
+            Log.d("values", "values : " + picState .value.picObj.toString())
                 apiState = RandomFoxPicApiState.Succes
             } catch(e :Exception){
                 apiState = RandomFoxPicApiState.Error
             }
-        }
-
-    }
-    fun setNamePic(name : String){
-        _uifoxPicState.update {
-            it.copy(newPicName = name)
-        }
-    }
-
-    fun showAddDialog(){
-        _uifoxPicState.update {
-            it.copy(addPic = true)
-        }
     }
 
     fun addFoxPic(name : String){
         viewModelScope.launch {
-            val newPic = FoxPic(name, _uifoxPicState.value.newPicLink)
+            val newPic = FoxPic(name, picState.value.picObj.link)
             repo.addFoxPic(newPic)
         }
     }

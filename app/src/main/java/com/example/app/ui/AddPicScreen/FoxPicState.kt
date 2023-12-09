@@ -4,7 +4,6 @@ import com.example.app.model.FoxPic
 
 data class FoxPicState (
     val newPicName : String ="",
-    val newPicLink : String = "",
     val addPic : Boolean = false
 )
 

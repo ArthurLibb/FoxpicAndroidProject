@@ -10,7 +10,6 @@ import com.example.app.network.asDomainObject
 import com.example.app.network.service.FoxPicService
 import com.example.app.network.service.getAsFlow
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 
 interface FoxPicRepository{
@@ -21,7 +20,7 @@ interface FoxPicRepository{
     suspend fun getRandomFoxPic(): Flow<FoxPic>
 }
 
-class OfflineFoxPicRepository (private val foxPicDao: FoxPicDao,private val foxPicSerivice : FoxPicService) : FoxPicRepository{
+class OfflineFoxPicRepository (private val foxPicDao: FoxPicDao, private val foxPicSerivice : FoxPicService) : FoxPicRepository{
     override fun getFoxPic(id : String): Flow<FoxPic>{
             return foxPicDao.getFoxPic(id.toInt()).map{
                 it.asDomainFoxPic()
@@ -36,13 +35,9 @@ class OfflineFoxPicRepository (private val foxPicDao: FoxPicDao,private val foxP
         foxPicDao.deleteFoxPic(foxPic.asEntity())
     }
 
-    override suspend fun getRandomFoxPic(): Flow<FoxPic> {
+    override suspend fun getRandomFoxPic(): Flow<FoxPic>  {
         Log.d("repo", "getting random foxpic")
-        val pic = foxPicSerivice.getAsFlow()
-        pic.collect{
-                value -> Log.d("repo", "Values: " + value.link + " " + value.image)
-        }
-        return pic.map { FoxPic("", it.image) }
+        return foxPicSerivice.getAsFlow().map { FoxPic("", it.image) }
     }
 
     override fun getFoxpics(): Flow<List<FoxPic>> {

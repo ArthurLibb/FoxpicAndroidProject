@@ -3,6 +3,7 @@ package com.example.app.ui.AddPicScreen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +11,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Autorenew
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
@@ -17,6 +21,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,8 +49,8 @@ fun AddFoxPicSreen(viewmodel : AddFoxPicViewModel = viewModel(factory = AddFoxPi
     val openAlertDialog = remember {
         mutableStateOf(false)
     }
-
-    val foxPicState by viewmodel.uifoxPicState.collectAsState()
+    val fowPicAdded by viewmodel.uifoxPicState.collectAsState()
+    val foxPicState by viewmodel.picState.collectAsState()
     val apiState = viewmodel.apiState
 
     Box(modifier = modifier){
@@ -63,24 +68,29 @@ fun AddFoxPicSreen(viewmodel : AddFoxPicViewModel = viewModel(factory = AddFoxPi
                  }
              }
              is RandomFoxPicApiState.Error -> Text("An error has occured :/")
-             is RandomFoxPicApiState.Succes -> AddPicComponent(
-                 foxPicState,
-                 onPicSaved = {viewmodel.showAddDialog()})
+             is RandomFoxPicApiState.Succes -> {
+                 when(openAlertDialog.value){
+                     false -> {
+                         AddPicComponent(
+                             foxPicState,
+                             onPicSaved = { openAlertDialog.value = true })
+                     }
+                     true -> {
+                         AddPicDialog(
+                             onDismissRequest = { openAlertDialog.value = false },
+                             onConfim = {
+                                 viewmodel.addFoxPic(it)
+                                 openAlertDialog.value = false
+                             })
+                     }
+                 }
+             }
          }
-         if(addPicDialogVisable){
-             AddPicDialog(
-                 onDismissRequest = {openAlertDialog.value = false},
-                 onConfim = {
-                     viewmodel.addFoxPic(it)
-                     openAlertDialog.value = false
-                 })
-         }
-
     }
 }
 
 @Composable
-fun AddPicComponent(foxpicstate : FoxPicState, onPicSaved: () -> Unit, modifier: Modifier = Modifier) {
+fun AddPicComponent(foxpicstate : PicState, onPicSaved: () -> Unit, modifier: Modifier = Modifier) {
         Card(
             modifier = modifier
                 .clip(RoundedCornerShape(4.dp))
@@ -98,8 +108,8 @@ fun AddPicComponent(foxpicstate : FoxPicState, onPicSaved: () -> Unit, modifier:
                         .height(200.dp)
                 ) {
                     AsyncImage(
-                        model = foxpicstate.newPicLink,
-                        contentDescription = foxpicstate.newPicName,
+                        model = foxpicstate.picObj.link,
+                        contentDescription = foxpicstate.picObj.name,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -109,16 +119,34 @@ fun AddPicComponent(foxpicstate : FoxPicState, onPicSaved: () -> Unit, modifier:
                         .fillMaxWidth()
                         .align(Alignment.CenterHorizontally)
                 ){
-                    ElevatedButton(
-                        onClick = { onPicSaved() },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = OrangeFox,
-                            contentColor = Color.Black
+                    Row(
+
+                    ){
+                        ElevatedButton(
+                            onClick = { onPicSaved() },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = OrangeFox,
+                                contentColor = Color.Black
+                            )
                         )
-                    )
-                    {
-                        Text(text = "Add")
+                        {
+                            Text(text = "Add")
+                            Icon(Icons.Outlined.Add,  contentDescription ="Add")
+                        }
+                        Spacer(modifier = Modifier.width(5.dp))
+                        ElevatedButton(
+                            onClick = { },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Gray,
+                                contentColor = Color.Black
+                            )
+                        )
+                        {
+                            Text(text = "Other Pic")
+                            Icon(Icons.Outlined.Autorenew, contentDescription = "refresh")
+                        }
                     }
+
                 }
             }
         }
