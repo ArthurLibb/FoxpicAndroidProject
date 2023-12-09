@@ -36,7 +36,7 @@ fun AddPicDialog(modifier: Modifier = Modifier,
         mutableStateOf("")
     }
 
-    Dialog(onDismissRequest = { onDismissRequest() }, ) {
+    Dialog(onDismissRequest = { onDismissRequest() } ) {
         Card(
             modifier = modifier
                 .clip(RoundedCornerShape(4.dp))
@@ -44,7 +44,7 @@ fun AddPicDialog(modifier: Modifier = Modifier,
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
         ) {
             Column {
-                TextField(value = "",
+                TextField(value = naamPic,
                     onValueChange = { naam -> naamPic = naam },
                     label = { Text(text = "How would you like to name the pic?") })
                 Row(

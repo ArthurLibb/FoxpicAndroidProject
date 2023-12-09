@@ -1,9 +1,10 @@
 package com.example.app.ui.overviewScreen
 
 import com.example.app.model.FoxPic
+import java.util.Date
 
 data class OverviewState (
-    val currentFoxPic: FoxPic = FoxPic("",""),
+    val currentFoxPic: FoxPic = FoxPic("","", Date()),
 )
 
 data class FoxPicListState(val foxpicList: List<FoxPic> = listOf())

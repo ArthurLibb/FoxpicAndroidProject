@@ -6,11 +6,11 @@ import com.example.app.database.asDomainFoxpics
 import com.example.app.database.asEntity
 import com.example.app.database.daos.FoxPicDao
 import com.example.app.model.FoxPic
-import com.example.app.network.asDomainObject
 import com.example.app.network.service.FoxPicService
 import com.example.app.network.service.getAsFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.util.Date
 
 interface FoxPicRepository{
     fun getFoxPic(id: String): Flow<FoxPic>
@@ -37,7 +37,7 @@ class OfflineFoxPicRepository (private val foxPicDao: FoxPicDao, private val fox
 
     override suspend fun getRandomFoxPic(): Flow<FoxPic>  {
         Log.d("repo", "getting random foxpic")
-        return foxPicSerivice.getAsFlow().map { FoxPic("", it.image) }
+        return foxPicSerivice.getAsFlow().map { FoxPic("", it.image, Date()) }
     }
 
     override fun getFoxpics(): Flow<List<FoxPic>> {

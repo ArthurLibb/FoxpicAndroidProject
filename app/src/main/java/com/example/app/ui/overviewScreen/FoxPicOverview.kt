@@ -1,7 +1,8 @@
 package com.example.app.ui.overviewScreen
 
+import android.content.Context
 import android.util.Log
-import androidx.compose.foundation.Image
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,30 +16,27 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.app.R
 import com.example.app.model.FoxPic
-import com.example.app.ui.FoxPicComposable
-import com.example.app.ui.overviewScreen.AppOverviewViewModel
+import com.example.app.ui.components.FoxPicComposable
 import com.example.app.ui.theme.OrangeFox
-import kotlinx.coroutines.launch
 
 @Composable
 fun FoxPicOverview(
     modifier: Modifier = Modifier,
     overviewViewModel: AppOverviewViewModel = viewModel(factory = AppOverviewViewModel.Factory)
 ){
+    val mContext = LocalContext.current
+    val toast = Toast.makeText(mContext, "Pic has been deleted!", Toast.LENGTH_LONG)
     val overviewState by overviewViewModel.uiState.collectAsState()
     val foxPicListState by overviewViewModel.foxpicListState.collectAsState()
-
     val foxPicApiState = overviewViewModel.apiState
 
     Box(modifier = modifier){
@@ -56,7 +54,15 @@ fun FoxPicOverview(
                 }
             }
             is FoxApiState.Error -> Text(text = "An error as occured")
-            is FoxApiState.Succes -> FoxPicListComposable(overviewState = overviewState, foxPicListState = foxPicListState, modifier = modifier)
+            is FoxApiState.Succes -> {
+                FoxPicListComposable(overviewState = overviewState,
+                    foxPicListState = foxPicListState,
+                    modifier = modifier,
+                    onDelete = {
+                        overviewViewModel.deleteFoxPic(it)
+                        toast
+                    })
+            }
         }
     }
 }
@@ -65,8 +71,10 @@ fun FoxPicOverview(
 fun FoxPicListComposable(
     modifier: Modifier,
     overviewState: OverviewState,
-    foxPicListState : FoxPicListState
+    foxPicListState : FoxPicListState,
+    onDelete : (FoxPic) -> Unit
 ){
+
     if(foxPicListState.foxpicList.isEmpty()){
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -83,7 +91,7 @@ fun FoxPicListComposable(
             modifier = Modifier.fillMaxSize().padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally){
             items(foxPicListState.foxpicList){
-                FoxPicComposable(name = it.name, link = it.link)
+                FoxPicComposable(pic = it, onDelete = {piv -> onDelete(piv)})
                 Log.d("overview", it.name + " " + it.link)
             }
         }

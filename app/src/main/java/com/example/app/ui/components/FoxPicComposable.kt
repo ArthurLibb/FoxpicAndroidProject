@@ -1,18 +1,13 @@
-package com.example.app.ui
+package com.example.app.ui.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+import androidx.activity.compose.setContent
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Autorenew
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -22,55 +17,52 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.app.ui.theme.OrangeFox
+import com.example.app.model.FoxPic
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @Composable
 fun FoxPicComposable(
     modifier : Modifier = Modifier,
-    name : String ,
-    link : String = "")
+    pic : FoxPic,
+    onDelete : (FoxPic) -> Unit
+)
 {
-    Column(modifier = Modifier.padding(5.dp)) {
+    val simpleDateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+
+    Column(modifier = Modifier.padding(5.dp).fillMaxSize()) {
         Card(colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
-        ), modifier = modifier) {
+        ), modifier = modifier.fillMaxSize()) {
             Row {
                 Text(
                     color = Color.DarkGray,
                     fontWeight = FontWeight.Bold,
-                    text = name,
+                    text = pic.name,
                     textAlign = TextAlign.Center,
                     modifier = modifier.padding(16.dp),
                 )
             }
-           Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-               Column(
-                   modifier = Modifier.fillMaxSize(),
-                   verticalArrangement = Arrangement.Center,
-                   horizontalAlignment = Alignment.CenterHorizontally
-               ){
-                   Box(
-                       modifier = Modifier
-                           .fillMaxWidth()
-                           .height(200.dp)
-                   ) {
-                       AsyncImage(model = link, contentDescription = name)
-                   }
-               }
+           Row(modifier = Modifier
+               .align(Alignment.CenterHorizontally)
+               .padding(15.dp)) {
+                AsyncImage(model = pic.link, contentDescription = pic.name)
            }
-            Row {
+
+            Row(modifier = Modifier.padding(start = 15.dp, end = 15.dp)){
+                Text(text = "Date pic added : " +  simpleDateFormat.format(pic.date),
+                    color = Color.Gray)
+            }
+            Row(modifier = Modifier.align(Alignment.End).padding(start = 15.dp, end = 15.dp, bottom = 5.dp)){
                     ElevatedButton(
-                        onClick = { },
+                        onClick = { onDelete(pic) },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.Red,
                             contentColor = Color.White
@@ -83,15 +75,4 @@ fun FoxPicComposable(
                 }
             }
         }
-}
-
-
-
-@Preview
-@Composable
-fun FoxPicPreview() {
-    FoxPicComposable(
-        name = "HAllloooooo",
-        link = "https://randomfox.ca/?i=17",
-    )
 }

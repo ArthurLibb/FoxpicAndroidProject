@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.Serializable
+import java.util.Date
 
 @Serializable
 data class ApiFoxPic(val image : String, val link : String) {}
@@ -19,5 +20,5 @@ fun List<ApiFoxPic>.asDomainObjects(): List<FoxPic>{
 
 fun ApiFoxPic.asDomainObject(): FoxPic{
     Log.d("repo", "values: " + image + " " + link)
-    return FoxPic("", image)
+    return FoxPic("", image, Date())
 }

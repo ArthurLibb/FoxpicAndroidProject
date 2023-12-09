@@ -1,5 +1,7 @@
 package com.example.app.ui.overviewScreen
 
+import android.widget.Toast
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,6 +13,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.app.AppApplication
 import com.example.app.data.FoxPicRepository
+import com.example.app.model.FoxPic
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -46,6 +49,12 @@ class AppOverviewViewModel(private val repo : FoxPicRepository) : ViewModel(){
             apiState = FoxApiState.Succes
         }catch(e :IOException){
             apiState = FoxApiState.Error
+        }
+    }
+
+    fun deleteFoxPic(pic : FoxPic){
+        viewModelScope.launch {
+            repo.deleteFoxPic(pic)
         }
     }
 

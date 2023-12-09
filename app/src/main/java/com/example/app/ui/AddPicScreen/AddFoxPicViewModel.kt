@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class AddFoxPicViewModel(private val repo : FoxPicRepository) : ViewModel() {
 
@@ -39,7 +40,7 @@ class AddFoxPicViewModel(private val repo : FoxPicRepository) : ViewModel() {
 
                 viewModelScope.launch {
                     picState = repo.getRandomFoxPic().map{
-                        PicState(it)
+                        PicState(FoxPic(it.name, it.link, Date()))
                     }.stateIn(
                         scope = viewModelScope,
                         started = SharingStarted.WhileSubscribed(),
@@ -55,7 +56,7 @@ class AddFoxPicViewModel(private val repo : FoxPicRepository) : ViewModel() {
 
     fun addFoxPic(name : String){
         viewModelScope.launch {
-            val newPic = FoxPic(name, picState.value.picObj.link)
+            val newPic = FoxPic(name, picState.value.picObj.link, Date())
             repo.addFoxPic(newPic)
         }
     }
