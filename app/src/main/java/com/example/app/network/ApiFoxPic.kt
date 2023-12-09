@@ -1,5 +1,6 @@
 package com.example.app.network
 
+import android.util.Log
 import com.example.app.model.FoxPic
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -7,7 +8,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ApiFoxPic(val name : String, val link : String) {}
+data class ApiFoxPic(val image : String, val link : String) {}
 
 fun List<ApiFoxPic>.asDomainObjects(): List<FoxPic>{
     var list = this.map {
@@ -17,5 +18,6 @@ fun List<ApiFoxPic>.asDomainObjects(): List<FoxPic>{
 }
 
 fun ApiFoxPic.asDomainObject(): FoxPic{
-    return FoxPic(name, link)
+    Log.d("repo", "values: " + image + " " + link)
+    return FoxPic("", image)
 }

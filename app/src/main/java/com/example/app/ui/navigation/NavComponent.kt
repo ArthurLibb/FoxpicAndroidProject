@@ -15,8 +15,11 @@ fun navComponent(navController: NavHostController, modifier: Modifier){
     NavHost(
         navController = navController,
         startDestination = OverviewScreen.Start.name,
-        modifier = modifier ){
+        modifier = modifier
+    )
+    {
         composable(route = OverviewScreen.Start.name){
+            Log.i("Nav", "nav to overview")
             FoxPicOverview()
         }
         composable(route = OverviewScreen.Detail.name){

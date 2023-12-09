@@ -18,6 +18,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.app.ui.components.AppBar
+import com.example.app.ui.components.TopBarApp
 import com.example.app.ui.navigation.FoxPicNavigationType
 import com.example.app.ui.navigation.OverviewScreen
 import com.example.app.ui.navigation.navComponent
@@ -26,8 +27,7 @@ import com.example.app.ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AndroidApp(windowSize: WindowWidthSizeClass,navController: NavHostController = rememberNavController()){
-    var addingVisible by rememberSaveable { mutableStateOf(false) }
+fun AndroidApp(navType : FoxPicNavigationType,navController: NavHostController = rememberNavController()){
 
     val backStackEntry by navController.currentBackStackEntryAsState()
     val goHome : () -> Unit = {
@@ -36,25 +36,15 @@ fun AndroidApp(windowSize: WindowWidthSizeClass,navController: NavHostController
             inclusive = false
         )
     }
-    val addNewFoxPic : () -> Unit = {
-        navController.navigate(OverviewScreen.AddFoxPic.name){launchSingleTop = true}
-    }
-val navType : FoxPicNavigationType
-    when(windowSize){
-        WindowWidthSizeClass.Compact -> {
-            navType = FoxPicNavigationType.BOTTOM_NAV
-        }
-        WindowWidthSizeClass.Expanded -> {
-            navType = FoxPicNavigationType.NAVIGATION_DRAWER
-        }
-        else -> {
-            navType = FoxPicNavigationType.BOTTOM_NAV
-        }
-    }
+    val addNewFoxPic = { navController.navigate(OverviewScreen.AddFoxPic.name) {launchSingleTop = true} }
+
+    val currentScreen = OverviewScreen.valueOf(backStackEntry?.destination?.route ?: OverviewScreen.Start.name).title
+
 
     Scaffold(
         containerColor = Color.Transparent,
-        bottomBar = { AppBar(goHome, addNewFoxPic) },
+        topBar = { TopBarApp(currentScreen = currentScreen) },
+        bottomBar = { AppBar(goHome, addNewFoxPic)},
     ){
         innerPadding ->
         navComponent(navController, modifier = Modifier.padding(innerPadding))
@@ -66,7 +56,7 @@ val navType : FoxPicNavigationType
 fun AppPreview(){
     AppTheme {
         Surface (modifier = Modifier.fillMaxSize()){
-            AndroidApp(windowSize = WindowWidthSizeClass.Compact)
+            AndroidApp(navType = FoxPicNavigationType.BOTTOM_NAV)
         }
     }
 }

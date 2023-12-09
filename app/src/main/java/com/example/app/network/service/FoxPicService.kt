@@ -1,5 +1,6 @@
 package com.example.app.network.service
 
+import android.util.Log
 import com.example.app.model.FoxPic
 import com.example.app.network.ApiFoxPic
 import kotlinx.coroutines.flow.Flow
@@ -9,7 +10,7 @@ import retrofit2.http.GET
 
 interface FoxPicService{
 
-    @GET
+    @GET(".")
     suspend fun getFoxPic(): ApiFoxPic
 
 }

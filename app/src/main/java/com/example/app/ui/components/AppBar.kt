@@ -14,21 +14,22 @@ import androidx.navigation.NavHostController
 import com.example.app.ui.theme.FoxRed
 import com.example.app.ui.theme.GreenBlueDark
 import com.example.app.ui.theme.GreenBlueDarkLess
+import com.example.app.ui.theme.OrangeFox
 
 @Composable
 fun AppBar(goHome: () -> Unit, getNewFoxPic: () -> Unit){
          BottomAppBar(
              containerColor = FoxRed,
              actions = {
-                 IconButton(onClick = { goHome }){
+                 IconButton(onClick =  goHome ){
                      Icon(Icons.Filled.Home, contentDescription = "home button")
                  }
              },
 
              floatingActionButton = {
                  FloatingActionButton(
-                     onClick = {getNewFoxPic },
-                     containerColor = FoxRed
+                     onClick = getNewFoxPic,
+                     containerColor = OrangeFox
                  ) {
                      Icon(Icons.Filled.Add, contentDescription = "add buttons")
                  }
