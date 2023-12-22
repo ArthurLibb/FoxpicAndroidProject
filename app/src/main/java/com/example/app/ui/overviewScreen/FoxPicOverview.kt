@@ -19,33 +19,37 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.app.model.FoxPic
+import com.example.app.ui.components.DeletePicDialog
 import com.example.app.ui.components.FoxPicComposable
 import com.example.app.ui.theme.OrangeFox
+import java.util.Date
 
 @Composable
 fun FoxPicOverview(
     modifier: Modifier = Modifier,
     overviewViewModel: AppOverviewViewModel = viewModel(factory = AppOverviewViewModel.Factory)
-){
+) {
     val mContext = LocalContext.current
     val toast = Toast.makeText(mContext, "Pic has been deleted!", Toast.LENGTH_LONG)
     val foxPicListState by overviewViewModel.foxpicListState.collectAsState()
     val foxPicApiState = overviewViewModel.apiState
 
-    Box(modifier = modifier){
-        when(foxPicApiState){
+    Box(modifier = modifier) {
+        when (foxPicApiState) {
             is FoxApiState.Loading -> {
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
-                ){
+                ) {
                     CircularProgressIndicator(
                         modifier = Modifier.width(64.dp),
                         color = MaterialTheme.colorScheme.secondary,
@@ -65,6 +69,7 @@ fun FoxPicOverview(
         }
     }
 }
+
 
 @Composable
 fun FoxPicListComposable(
@@ -86,7 +91,9 @@ fun FoxPicListComposable(
     else{
         val lazyListState = rememberLazyListState()
         LazyColumn(state = lazyListState,
-            modifier = Modifier.fillMaxSize().padding(16.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally){
             items(foxPicListState.foxpicList.sortedBy { p -> p.date }){
                 FoxPicComposable(pic = it, onDelete = {pic -> onDelete(pic)})

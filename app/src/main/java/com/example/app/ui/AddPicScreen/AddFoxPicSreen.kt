@@ -72,13 +72,10 @@ fun AddFoxPicSreen(viewmodel: AddFoxPicViewModel = viewModel(factory = AddFoxPic
                          AddPicComponent(
                              foxPicState,
                              onPicSaved = { openAlertDialog.value = true },
-                             onRefresh = {
-                                 viewmodel.getNewFoxPic()
-                             },
-                             onLoadingImage = {viewmodel.asyncImageLoading()},
-                             onSuccesImage = {viewmodel.asyncImageSucces()}
+                             onRefresh = { viewmodel.getNewFoxPic() },
+                             onLoadingImage = {viewmodel.asyncImageLoading() },
+                             onSuccesImage = {viewmodel.asyncImageSucces() }
                              )
-
                      }
                      true -> {
                          AddPicDialog(
@@ -120,8 +117,8 @@ fun AddPicComponent(foxpicstate : FoxPicState, onPicSaved: () -> Unit,
                             model = foxpicstate.linkImage,
                             contentDescription = "",
                             modifier = Modifier.fillMaxWidth(),
-                            onLoading = { onLoadingImage },
-                            onSuccess = {}
+                            onLoading = { onLoadingImage()},
+                            onSuccess = { onSuccesImage()}
                         )
                     }
                     else{

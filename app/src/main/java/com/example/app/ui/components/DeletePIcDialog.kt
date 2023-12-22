@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Dangerous
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -16,7 +17,9 @@ fun DeletePicDialog(modifier: Modifier = Modifier,
                     onConfim: () -> Unit) {
 
     AlertDialog(
-        icon = { Icons.Filled.Dangerous},
+        icon = { Icon(Icons.Filled.Dangerous, "Delete icon")},
+        title = { Text(text = "Deleting foxpic")},
+        text = { Text(text = "Do you want to delete this foxpic?")},
         onDismissRequest = {onDismissRequest()},
         confirmButton = {
             TextButton(onClick = { onConfim() }) {

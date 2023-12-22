@@ -63,9 +63,11 @@ class AddFoxPicViewModel(private val repo : FoxPicRepository,
     }
     fun asyncImageSucces(){
         apiState = RandomFoxPicApiState.Succes
+        Log.d("ImageAsync", "Set to succes")
     }
     fun asyncImageLoading(){
         apiState = RandomFoxPicApiState.Loading
+        Log.d("ImageAsync", "Set to loading")
     }
 
 

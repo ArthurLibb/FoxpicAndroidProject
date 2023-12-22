@@ -17,6 +17,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,8 +38,18 @@ fun FoxPicComposable(
 )
 {
     val simpleDateFormat = SimpleDateFormat("dd MMM yyyy 'on' HH:mm", Locale.getDefault())
+    val openDeleteDialog = remember { mutableStateOf(false) }
 
-    Column(modifier = Modifier.padding(5.dp).fillMaxSize()) {
+    if(openDeleteDialog.value){
+        DeletePicDialog(
+            onDismissRequest = {openDeleteDialog.value = false},
+            onConfim = {onDelete(pic)},
+        )
+    }
+
+    Column(modifier = Modifier
+        .padding(5.dp)
+        .fillMaxSize()) {
         Card(colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         ), modifier = modifier.fillMaxSize()) {
@@ -50,29 +62,31 @@ fun FoxPicComposable(
                     modifier = modifier.padding(16.dp),
                 )
             }
-           Row(modifier = Modifier
-               .align(Alignment.CenterHorizontally)
-               .padding(15.dp)) {
+            Row(modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(15.dp)) {
                 AsyncImage(model = pic.link, contentDescription = pic.name)
-           }
+            }
 
             Row(modifier = Modifier.padding(start = 15.dp, end = 15.dp)){
                 Text(text = "Date pic added : " +  simpleDateFormat.format(pic.date),
                     color = Color.Gray)
             }
-            Row(modifier = Modifier.align(Alignment.End).padding(start = 15.dp, end = 15.dp, bottom = 5.dp)){
-                    ElevatedButton(
-                        onClick = { onDelete(pic) },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Red,
-                            contentColor = Color.White
-                        )
+            Row(modifier = Modifier
+                .align(Alignment.End)
+                .padding(start = 15.dp, end = 15.dp, bottom = 5.dp)){
+                ElevatedButton(
+                    onClick = { openDeleteDialog.value = true},
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Red,
+                        contentColor = Color.White
                     )
-                    {
-                        Text(text = "Delete pic")
-                        Icon(Icons.Outlined.Delete, contentDescription = "delete")
-                    }
+                )
+                {
+                    Text(text = "Delete pic")
+                    Icon(Icons.Outlined.Delete, contentDescription = "delete")
                 }
             }
         }
+    }
 }
