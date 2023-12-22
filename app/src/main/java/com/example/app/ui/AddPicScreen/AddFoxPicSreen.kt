@@ -123,7 +123,7 @@ fun AddPicComponent(foxpicstate : FoxPicState, onPicSaved: () -> Unit,
                     }
                     AsyncImage(
                         model = foxpicstate.linkImage,
-                        contentDescription = "",
+                        contentDescription = "async fox image",
                         modifier = Modifier.fillMaxWidth(),
                         onSuccess = {loading.value = false},
                         onLoading = {loading.value = true}

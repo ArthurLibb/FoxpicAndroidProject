@@ -19,8 +19,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             AppTheme {
                 Surface {
-                    val windowsize = calculateWindowSizeClass(activity = this)
-                    AndroidApp(navType = FoxPicNavigationType.BOTTOM_NAV)
+                    AndroidApp()
                 }
             }
         }

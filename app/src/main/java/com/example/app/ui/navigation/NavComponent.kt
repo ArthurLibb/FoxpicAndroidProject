@@ -22,9 +22,9 @@ fun navComponent(navController: NavHostController, modifier: Modifier){
             Log.i("Nav", "nav to overview")
             FoxPicOverview()
         }
-        composable(route = OverviewScreen.Detail.name){
+        /*composable(route = OverviewScreen.Detail.name){
             Text("Detail")
-        }
+        }*/
         composable(route = OverviewScreen.AddFoxPic.name){
             Log.i("vm navigation", "Nev to addFoxPic")
             AddFoxPicSreen()

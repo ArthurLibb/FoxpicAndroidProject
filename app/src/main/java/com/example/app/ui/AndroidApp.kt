@@ -27,7 +27,7 @@ import com.example.app.ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AndroidApp(navType : FoxPicNavigationType,navController: NavHostController = rememberNavController()){
+fun AndroidApp(navController: NavHostController = rememberNavController()){
 
     val backStackEntry by navController.currentBackStackEntryAsState()
     val goHome : () -> Unit = {
@@ -56,7 +56,7 @@ fun AndroidApp(navType : FoxPicNavigationType,navController: NavHostController =
 fun AppPreview(){
     AppTheme {
         Surface (modifier = Modifier.fillMaxSize()){
-            AndroidApp(navType = FoxPicNavigationType.BOTTOM_NAV)
+            AndroidApp()
         }
     }
 }

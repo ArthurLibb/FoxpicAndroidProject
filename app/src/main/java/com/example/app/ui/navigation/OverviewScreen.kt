@@ -10,6 +10,6 @@ import com.example.app.R
 
 enum class OverviewScreen(@StringRes val title: Int, val icon: ImageVector) {
     Start(title = R.string.title_overview, icon = Icons.Filled.Home),
-    Detail(title = R.string.welcome, icon = Icons.Filled.Home),
+    Welcome(title = R.string.welcome, icon = Icons.Filled.Home),
     AddFoxPic(title = R.string.add_foxpic, icon = Icons.Filled.Add)
 }
