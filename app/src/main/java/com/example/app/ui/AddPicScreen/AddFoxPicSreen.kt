@@ -67,27 +67,24 @@ fun AddFoxPicSreen(viewmodel: AddFoxPicViewModel = viewModel(factory = AddFoxPic
              }
              is RandomFoxPicApiState.Error -> Text("An error has occured :/")
              is RandomFoxPicApiState.Succes -> {
-                 when(openAlertDialog.value){
-                     false -> {
-                         AddPicComponent(
-                             foxPicState,
-                             onPicSaved = { openAlertDialog.value = true },
-                             onRefresh = { viewmodel.getNewFoxPic() }
-                             )
-                     }
-                     true -> {
-                         AddPicDialog(
-                             onDismissRequest = { openAlertDialog.value = false },
-                             onConfim = {
-                                 viewmodel.addFoxPic(it)
-                                 openAlertDialog.value = false
-                             })
-                     }
+                 if(openAlertDialog.value){
+                     AddPicDialog(
+                         onDismissRequest = { openAlertDialog.value = false },
+                         onConfim = {
+                             viewmodel.addFoxPic(it)
+                             openAlertDialog.value = false
+                     })
                  }
+                 AddPicComponent(
+                     foxPicState,
+                     onPicSaved = { openAlertDialog.value = true },
+                     onRefresh = { viewmodel.getNewFoxPic() }
+                 )
              }
          }
     }
 }
+
 
 @Composable
 fun AddPicComponent(foxpicstate : FoxPicState, onPicSaved: () -> Unit,
@@ -100,7 +97,8 @@ fun AddPicComponent(foxpicstate : FoxPicState, onPicSaved: () -> Unit,
             modifier = modifier
                 .clip(RoundedCornerShape(4.dp))
                 .padding(16.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+
         ) {
             Column(
                 modifier = Modifier
