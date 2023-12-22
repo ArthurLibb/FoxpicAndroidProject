@@ -42,15 +42,13 @@ import com.example.app.ui.theme.OrangeFox
 
 
 @Composable
-fun AddFoxPicSreen(viewmodel : AddFoxPicViewModel = viewModel(factory = AddFoxPicViewModel.Factory),
-                   modifier: Modifier = Modifier,
-                   addPicDialogVisable: Boolean = false){
+fun AddFoxPicSreen(viewmodel: AddFoxPicViewModel = viewModel(factory = AddFoxPicViewModel.Factory),
+                   modifier: Modifier = Modifier){
 
     val openAlertDialog = remember {
         mutableStateOf(false)
     }
-    val fowPicAdded by viewmodel.uifoxPicState.collectAsState()
-    val foxPicState by viewmodel.picState.collectAsState()
+    val foxPicState by viewmodel.uifoxPicState.collectAsState()
     val apiState = viewmodel.apiState
 
     Box(modifier = modifier){
@@ -73,7 +71,14 @@ fun AddFoxPicSreen(viewmodel : AddFoxPicViewModel = viewModel(factory = AddFoxPi
                      false -> {
                          AddPicComponent(
                              foxPicState,
-                             onPicSaved = { openAlertDialog.value = true })
+                             onPicSaved = { openAlertDialog.value = true },
+                             onRefresh = {
+                                 viewmodel.getNewFoxPic()
+                             },
+                             onLoadingImage = {viewmodel.asyncImageLoading()},
+                             onSuccesImage = {viewmodel.asyncImageSucces()}
+                             )
+
                      }
                      true -> {
                          AddPicDialog(
@@ -90,7 +95,10 @@ fun AddFoxPicSreen(viewmodel : AddFoxPicViewModel = viewModel(factory = AddFoxPi
 }
 
 @Composable
-fun AddPicComponent(foxpicstate : PicState, onPicSaved: () -> Unit, modifier: Modifier = Modifier) {
+fun AddPicComponent(foxpicstate : FoxPicState, onPicSaved: () -> Unit,
+                    modifier: Modifier = Modifier, onRefresh: () -> Unit,
+                    onLoadingImage: () -> Unit, onSuccesImage: () -> Unit
+) {
         Card(
             modifier = modifier
                 .clip(RoundedCornerShape(4.dp))
@@ -107,11 +115,26 @@ fun AddPicComponent(foxpicstate : PicState, onPicSaved: () -> Unit, modifier: Mo
                         .fillMaxWidth()
                         .height(200.dp)
                 ) {
-                    AsyncImage(
-                        model = foxpicstate.picObj.link,
-                        contentDescription = foxpicstate.picObj.name,
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    if (foxpicstate.linkImage.isNotEmpty()) {
+                        AsyncImage(
+                            model = foxpicstate.linkImage,
+                            contentDescription = "",
+                            modifier = Modifier.fillMaxWidth(),
+                            onLoading = { onLoadingImage },
+                            onSuccess = {}
+                        )
+                    }
+                    else{
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ){
+                        CircularProgressIndicator(
+                            modifier = Modifier.width(64.dp),
+                            color = MaterialTheme.colorScheme.secondary,
+                        )}
+                    }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Box (
@@ -135,7 +158,7 @@ fun AddPicComponent(foxpicstate : PicState, onPicSaved: () -> Unit, modifier: Mo
                         }
                         Spacer(modifier = Modifier.width(5.dp))
                         ElevatedButton(
-                            onClick = { },
+                            onClick = { onRefresh() },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.Gray,
                                 contentColor = Color.Black

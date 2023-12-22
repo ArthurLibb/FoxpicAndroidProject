@@ -9,7 +9,7 @@ import com.example.app.database.daos.FoxPicDao
 import com.example.app.model.FoxPic
 import com.example.app.utill.FoxPicParser
 
-@Database(entities = [FoxPicEntity::class], version = 5, exportSchema = false)
+@Database(entities = [FoxPicEntity::class], version = 6, exportSchema = false)
 @TypeConverters(FoxPicParser::class)
 abstract class RoomDB() : RoomDatabase() {
 

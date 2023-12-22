@@ -5,10 +5,8 @@ import androidx.room.PrimaryKey
 import com.example.app.model.FoxPic
 import java.util.Date
 
-@Entity(tableName = "foxpics")
+@Entity(tableName = "foxpics", primaryKeys = ["link", "date"])
 data class FoxPicEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
     val name : String = "",
     val link : String = "",
     val date: Date = Date()

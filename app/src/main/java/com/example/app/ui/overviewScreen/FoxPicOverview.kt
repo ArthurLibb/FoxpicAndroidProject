@@ -35,7 +35,6 @@ fun FoxPicOverview(
 ){
     val mContext = LocalContext.current
     val toast = Toast.makeText(mContext, "Pic has been deleted!", Toast.LENGTH_LONG)
-    val overviewState by overviewViewModel.uiState.collectAsState()
     val foxPicListState by overviewViewModel.foxpicListState.collectAsState()
     val foxPicApiState = overviewViewModel.apiState
 
@@ -55,7 +54,7 @@ fun FoxPicOverview(
             }
             is FoxApiState.Error -> Text(text = "An error as occured")
             is FoxApiState.Succes -> {
-                FoxPicListComposable(overviewState = overviewState,
+                FoxPicListComposable(
                     foxPicListState = foxPicListState,
                     modifier = modifier,
                     onDelete = {
@@ -70,7 +69,6 @@ fun FoxPicOverview(
 @Composable
 fun FoxPicListComposable(
     modifier: Modifier,
-    overviewState: OverviewState,
     foxPicListState : FoxPicListState,
     onDelete : (FoxPic) -> Unit
 ){
@@ -90,8 +88,8 @@ fun FoxPicListComposable(
         LazyColumn(state = lazyListState,
             modifier = Modifier.fillMaxSize().padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally){
-            items(foxPicListState.foxpicList){
-                FoxPicComposable(pic = it, onDelete = {piv -> onDelete(piv)})
+            items(foxPicListState.foxpicList.sortedBy { p -> p.date }){
+                FoxPicComposable(pic = it, onDelete = {pic -> onDelete(pic)})
                 Log.d("overview", it.name + " " + it.link)
             }
         }

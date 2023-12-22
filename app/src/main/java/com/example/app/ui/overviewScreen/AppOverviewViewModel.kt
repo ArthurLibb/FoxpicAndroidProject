@@ -1,5 +1,6 @@
 package com.example.app.ui.overviewScreen
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -25,10 +26,7 @@ import java.io.IOException
 
 class AppOverviewViewModel(private val repo : FoxPicRepository) : ViewModel(){
 
-    private val _ui_state = MutableStateFlow(OverviewState())
     lateinit var foxpicListState : StateFlow<FoxPicListState>
-
-    val uiState : StateFlow<OverviewState> = _ui_state.asStateFlow()
 
     var apiState : FoxApiState by mutableStateOf(FoxApiState.Loading)
         private set
@@ -38,6 +36,7 @@ class AppOverviewViewModel(private val repo : FoxPicRepository) : ViewModel(){
     }
 
     private fun getFoxPics(){
+        apiState = FoxApiState.Loading
         try{
             foxpicListState = repo.getFoxpics().map {
                 FoxPicListState(it)
@@ -54,7 +53,9 @@ class AppOverviewViewModel(private val repo : FoxPicRepository) : ViewModel(){
 
     fun deleteFoxPic(pic : FoxPic){
         viewModelScope.launch {
+            Log.d("repo delete", "Deleting pic with values: " + pic.name + " " + pic.link)
             repo.deleteFoxPic(pic)
+            getFoxPics()
         }
     }
 

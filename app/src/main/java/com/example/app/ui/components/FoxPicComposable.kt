@@ -35,7 +35,7 @@ fun FoxPicComposable(
     onDelete : (FoxPic) -> Unit
 )
 {
-    val simpleDateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+    val simpleDateFormat = SimpleDateFormat("dd MMM yyyy 'on' HH:mm", Locale.getDefault())
 
     Column(modifier = Modifier.padding(5.dp).fillMaxSize()) {
         Card(colors = CardDefaults.cardColors(
@@ -70,7 +70,7 @@ fun FoxPicComposable(
                     )
                     {
                         Text(text = "Delete pic")
-                        Icon(Icons.Outlined.Delete, contentDescription = "refresh")
+                        Icon(Icons.Outlined.Delete, contentDescription = "delete")
                     }
                 }
             }

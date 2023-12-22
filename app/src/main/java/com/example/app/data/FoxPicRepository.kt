@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 import java.util.Date
 
 interface FoxPicRepository{
-    fun getFoxPic(id: String): Flow<FoxPic>
+    /*fun getFoxPic(id: String): Flow<FoxPic>*/
     fun getFoxpics(): Flow<List<FoxPic>>
     suspend fun addFoxPic(foxpic : FoxPic)
     suspend fun deleteFoxPic(foxPic: FoxPic)
@@ -21,11 +21,11 @@ interface FoxPicRepository{
 }
 
 class OfflineFoxPicRepository (private val foxPicDao: FoxPicDao, private val foxPicSerivice : FoxPicService) : FoxPicRepository{
-    override fun getFoxPic(id : String): Flow<FoxPic>{
+    /*override fun getFoxPic(id : String): Flow<FoxPic>{
             return foxPicDao.getFoxPic(id.toInt()).map{
                 it.asDomainFoxPic()
             }
-    }
+    }*/
 
     override suspend fun addFoxPic(foxPic: FoxPic){
         AddFoxPicTORoomDb(foxPic)
@@ -34,6 +34,7 @@ class OfflineFoxPicRepository (private val foxPicDao: FoxPicDao, private val fox
     override suspend fun deleteFoxPic(foxPic: FoxPic) {
         foxPicDao.deleteFoxPic(foxPic.asEntity())
     }
+
 
     override suspend fun getRandomFoxPic(): Flow<FoxPic>  {
         Log.d("repo", "getting random foxpic")
