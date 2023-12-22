@@ -3,15 +3,18 @@ package com.example.app.ui.components
 import androidx.activity.compose.setContent
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -39,6 +42,9 @@ fun FoxPicComposable(
 {
     val simpleDateFormat = SimpleDateFormat("dd MMM yyyy 'on' HH:mm", Locale.getDefault())
     val openDeleteDialog = remember { mutableStateOf(false) }
+    val imageLoading  = remember {
+        mutableStateOf(false)
+    }
 
     if(openDeleteDialog.value){
         DeletePicDialog(
@@ -65,7 +71,22 @@ fun FoxPicComposable(
             Row(modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(15.dp)) {
-                AsyncImage(model = pic.link, contentDescription = pic.name)
+                if(imageLoading.value){
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ){
+                        CircularProgressIndicator(
+                            modifier = Modifier.width(64.dp),
+                            color = MaterialTheme.colorScheme.secondary,
+                        )
+                    }
+                }
+                AsyncImage(model = pic.link,
+                    contentDescription = pic.name,
+                    onSuccess = {imageLoading.value = false},
+                    onLoading = {imageLoading.value = true})
             }
 
             Row(modifier = Modifier.padding(start = 15.dp, end = 15.dp)){

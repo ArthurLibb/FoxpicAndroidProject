@@ -72,9 +72,7 @@ fun AddFoxPicSreen(viewmodel: AddFoxPicViewModel = viewModel(factory = AddFoxPic
                          AddPicComponent(
                              foxPicState,
                              onPicSaved = { openAlertDialog.value = true },
-                             onRefresh = { viewmodel.getNewFoxPic() },
-                             onLoadingImage = {viewmodel.asyncImageLoading() },
-                             onSuccesImage = {viewmodel.asyncImageSucces() }
+                             onRefresh = { viewmodel.getNewFoxPic() }
                              )
                      }
                      true -> {
@@ -93,9 +91,11 @@ fun AddFoxPicSreen(viewmodel: AddFoxPicViewModel = viewModel(factory = AddFoxPic
 
 @Composable
 fun AddPicComponent(foxpicstate : FoxPicState, onPicSaved: () -> Unit,
-                    modifier: Modifier = Modifier, onRefresh: () -> Unit,
-                    onLoadingImage: () -> Unit, onSuccesImage: () -> Unit
+                    modifier: Modifier = Modifier, onRefresh: () -> Unit
 ) {
+    val loading = remember {
+        mutableStateOf(true)
+    }
         Card(
             modifier = modifier
                 .clip(RoundedCornerShape(4.dp))
@@ -112,26 +112,24 @@ fun AddPicComponent(foxpicstate : FoxPicState, onPicSaved: () -> Unit,
                         .fillMaxWidth()
                         .height(200.dp)
                 ) {
-                    if (foxpicstate.linkImage.isNotEmpty()) {
-                        AsyncImage(
-                            model = foxpicstate.linkImage,
-                            contentDescription = "",
-                            modifier = Modifier.fillMaxWidth(),
-                            onLoading = { onLoadingImage()},
-                            onSuccess = { onSuccesImage()}
-                        )
-                    }
-                    else{
+                    if (loading.value) {
                         Column(
                             modifier = Modifier.fillMaxSize(),
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ){
-                        CircularProgressIndicator(
-                            modifier = Modifier.width(64.dp),
-                            color = MaterialTheme.colorScheme.secondary,
-                        )}
+                            CircularProgressIndicator(
+                                modifier = Modifier.width(64.dp),
+                                color = MaterialTheme.colorScheme.secondary,
+                            )}
                     }
+                    AsyncImage(
+                        model = foxpicstate.linkImage,
+                        contentDescription = "",
+                        modifier = Modifier.fillMaxWidth(),
+                        onSuccess = {loading.value = false},
+                        onLoading = {loading.value = true}
+                    )
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Box (
