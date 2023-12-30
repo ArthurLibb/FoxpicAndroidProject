@@ -91,4 +91,5 @@ dependencies {
 ktlint {
     android.set(true)
     ignoreFailures.set(false)
+    disabledRules.set(setOf("import-ordering"))
 }

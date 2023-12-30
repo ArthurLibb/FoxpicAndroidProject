@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -28,15 +27,16 @@ import com.example.app.ui.theme.OrangeFox
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddPicDialog(modifier: Modifier = Modifier,
-                 onDismissRequest: () -> Unit,
-                 onConfim: (String) -> Unit
-){
+fun AddPicDialog(
+    modifier: Modifier = Modifier,
+    onDismissRequest: () -> Unit,
+    onConfim: (String) -> Unit
+) {
     var naamPic by remember {
         mutableStateOf("")
     }
 
-    Dialog(onDismissRequest = { onDismissRequest() } ) {
+    Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
             modifier = modifier
                 .clip(RoundedCornerShape(4.dp))
@@ -44,13 +44,15 @@ fun AddPicDialog(modifier: Modifier = Modifier,
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
         ) {
             Column {
-                TextField(value = naamPic,
+                TextField(
+                    value = naamPic,
                     onValueChange = { naam -> naamPic = naam },
-                    label = { Text(text = "How would you like to name the pic?") })
+                    label = { Text(text = "How would you like to name the pic?") }
+                )
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     TextButton(
                         colors = ButtonDefaults.buttonColors(
@@ -58,7 +60,7 @@ fun AddPicDialog(modifier: Modifier = Modifier,
                             contentColor = Color.Black
                         ),
                         onClick = { onConfim(naamPic) },
-                        modifier = Modifier.padding(8.dp),
+                        modifier = Modifier.padding(8.dp)
                     ) {
                         Text("Confirm")
                     }
@@ -68,7 +70,7 @@ fun AddPicDialog(modifier: Modifier = Modifier,
                             contentColor = Color.White
                         ),
                         onClick = { onDismissRequest() },
-                        modifier = Modifier.padding(8.dp),
+                        modifier = Modifier.padding(8.dp)
                     ) {
                         Text("Dismiss")
                     }

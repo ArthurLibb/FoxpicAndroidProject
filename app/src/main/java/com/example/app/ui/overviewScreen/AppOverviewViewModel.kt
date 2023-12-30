@@ -1,8 +1,6 @@
 package com.example.app.ui.overviewScreen
 
 import android.util.Log
-import android.widget.Toast
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -15,29 +13,27 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.app.AppApplication
 import com.example.app.data.FoxPicRepository
 import com.example.app.model.FoxPic
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class AppOverviewViewModel(private val repo : FoxPicRepository) : ViewModel(){
+class AppOverviewViewModel(private val repo: FoxPicRepository) : ViewModel() {
 
-    lateinit var foxpicListState : StateFlow<FoxPicListState>
+    lateinit var foxpicListState: StateFlow<FoxPicListState>
 
-    var apiState : FoxApiState by mutableStateOf(FoxApiState.Loading)
+    var apiState: FoxApiState by mutableStateOf(FoxApiState.Loading)
         private set
 
     init {
         getFoxPics()
     }
 
-    private fun getFoxPics(){
+    private fun getFoxPics() {
         apiState = FoxApiState.Loading
-        try{
+        try {
             viewModelScope.launch {
                 foxpicListState = repo.getFoxpics().map {
                     FoxPicListState(it)
@@ -48,12 +44,12 @@ class AppOverviewViewModel(private val repo : FoxPicRepository) : ViewModel(){
                 )
             }
             apiState = FoxApiState.Succes
-        }catch(e :IOException){
+        } catch (e: IOException) {
             apiState = FoxApiState.Error
         }
     }
 
-    fun deleteFoxPic(pic : FoxPic){
+    fun deleteFoxPic(pic: FoxPic) {
         viewModelScope.launch {
             Log.d("repo delete", "Deleting pic with values: " + pic.name + " " + pic.link)
             repo.deleteFoxPic(pic)
@@ -61,13 +57,13 @@ class AppOverviewViewModel(private val repo : FoxPicRepository) : ViewModel(){
         }
     }
 
-    companion object{
-        private var instance : AppOverviewViewModel? = null
-        val Factory : ViewModelProvider.Factory = viewModelFactory {
+    companion object {
+        private var instance: AppOverviewViewModel? = null
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                if(instance == null){
+                if (instance == null) {
                     val application = (this[APPLICATION_KEY] as AppApplication)
-                    val foxPicRepo= application.container.foxPicRepo
+                    val foxPicRepo = application.container.foxPicRepo
                     instance = AppOverviewViewModel(repo = foxPicRepo)
                 }
                 instance!!

@@ -16,19 +16,16 @@ import org.junit.runner.Description
 class OverviewViewmodelTest {
 
     @get:Rule
-    val testDispatcher  = TestDispatcherRule()
+    val testDispatcher = TestDispatcherRule()
 
     @Test
-    fun overviewViewmodel_Initialization() = testDispatcher.run{
+    fun overviewViewmodel_Initialization() = testDispatcher.run {
         val viewmodel = AppOverviewViewModel(repo = FakeFoxPicRepository())
         Assert.assertEquals(viewmodel.foxpicListState.value.foxpicList.size, 2)
     }
-
-
 }
-
 class TestDispatcherRule(
-    val testDispatcher: TestDispatcher = UnconfinedTestDispatcher(),
+    val testDispatcher: TestDispatcher = UnconfinedTestDispatcher()
 ) : TestWatcher() {
     override fun starting(description: Description) {
         Dispatchers.setMain(testDispatcher)

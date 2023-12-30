@@ -1,6 +1,5 @@
 package com.example.app.ui.overviewScreen
 
-import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -16,21 +15,16 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.app.model.FoxPic
-import com.example.app.ui.components.DeletePicDialog
 import com.example.app.ui.components.FoxPicComposable
 import com.example.app.ui.theme.OrangeFox
-import java.util.Date
 
 @Composable
 fun FoxPicOverview(
@@ -52,7 +46,7 @@ fun FoxPicOverview(
                 ) {
                     CircularProgressIndicator(
                         modifier = Modifier.width(64.dp),
-                        color = MaterialTheme.colorScheme.secondary,
+                        color = MaterialTheme.colorScheme.secondary
                     )
                 }
             }
@@ -64,39 +58,38 @@ fun FoxPicOverview(
                     onDelete = {
                         overviewViewModel.deleteFoxPic(it)
                         toast
-                    })
+                    }
+                )
             }
         }
     }
 }
 
-
 @Composable
 fun FoxPicListComposable(
     modifier: Modifier,
-    foxPicListState : FoxPicListState,
-    onDelete : (FoxPic) -> Unit
-){
-
-    if(foxPicListState.foxpicList.isEmpty()){
+    foxPicListState: FoxPicListState,
+    onDelete: (FoxPic) -> Unit
+) {
+    if (foxPicListState.foxpicList.isEmpty()) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
-        ){
-           /* Image(painter = painterResource(id = R.drawable), contentDescription = null)*/
+        ) {
             Text(text = "You have no foxpics saved!", color = OrangeFox)
         }
-    }
-    else{
+    } else {
         val lazyListState = rememberLazyListState()
-        LazyColumn(state = lazyListState,
+        LazyColumn(
+            state = lazyListState,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally){
-            items(foxPicListState.foxpicList.sortedBy { p -> p.date }){
-                FoxPicComposable(pic = it, onDelete = {pic -> onDelete(pic)})
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            items(foxPicListState.foxpicList.sortedBy { p -> p.date }) {
+                FoxPicComposable(pic = it, onDelete = { pic -> onDelete(pic) })
                 Log.d("overview", it.name + " " + it.link)
             }
         }

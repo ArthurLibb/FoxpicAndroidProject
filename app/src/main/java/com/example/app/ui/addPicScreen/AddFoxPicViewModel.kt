@@ -1,8 +1,6 @@
 package com.example.app.ui.addPicScreen
 
 import android.util.Log
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -13,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.app.AppApplication
 import com.example.app.data.FoxPicRepository
 import com.example.app.model.FoxPic
+import java.util.Date
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,55 +19,60 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import java.util.Date
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 
-class AddFoxPicViewModel(private val repo : FoxPicRepository,
-                         private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO)
-    : ViewModel() {
+class AddFoxPicViewModel(
+    private val repo: FoxPicRepository,
+    private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO
+) : ViewModel() {
 
     private val _uifoxPicState = MutableStateFlow(FoxPicState())
-    val uifoxPicState : StateFlow<FoxPicState> = _uifoxPicState.asStateFlow()
+    val uifoxPicState: StateFlow<FoxPicState> = _uifoxPicState.asStateFlow()
 
-
-    var apiState : RandomFoxPicApiState by mutableStateOf(RandomFoxPicApiState.Loading)
+    var apiState: RandomFoxPicApiState by mutableStateOf(RandomFoxPicApiState.Loading)
         private set
 
-    init{
+    init {
         getNewFoxPic()
     }
 
-    fun getNewFoxPic(){
-            try {
-                _uifoxPicState.value = _uifoxPicState.value.copy(linkImage="")
-                viewModelScope.launch {
-                    repo.getRandomFoxPic() //Backgroupnd thread
-                        .flowOn(dispatcherIO).collect{
-                        f ->
+    fun getNewFoxPic() {
+        try {
+            _uifoxPicState.value = _uifoxPicState.value.copy(linkImage = "")
+            viewModelScope.launch {
+                repo.getRandomFoxPic() // Backgroupnd thread
+                    .flowOn(dispatcherIO).collect {
+                            f ->
                         Log.d("values", f.name + " " + f.link)
-                        _uifoxPicState.value  = _uifoxPicState.value.copy(linkImage = f.link)
+                        _uifoxPicState.value = _uifoxPicState.value.copy(linkImage = f.link)
                     }
-                }
-                Log.d("values", "values : " + _uifoxPicState.value.toString())
-                apiState = RandomFoxPicApiState.Succes
-            } catch(e :Exception){
-                apiState = RandomFoxPicApiState.Error
             }
+            Log.d("values", "values : " + _uifoxPicState.value.toString())
+            apiState = RandomFoxPicApiState.Succes
+        } catch (e: Exception) {
+            apiState = RandomFoxPicApiState.Error
+        }
     }
 
-    fun addFoxPic(name : String){
+    fun addFoxPic(name: String) {
         Log.d("Values added", name)
         viewModelScope.launch {
-            val newPic = FoxPic(name,  _uifoxPicState.value.linkImage, Date())
+            val newPic = FoxPic(
+                name,
+                _uifoxPicState.value.linkImage,
+                Date()
+            )
             repo.addFoxPic(newPic)
         }
     }
 
-
-    companion object{
+    companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                AddFoxPicViewModel(repo = (this[APPLICATION_KEY] as AppApplication)
-                    .container.foxPicRepo)
+                AddFoxPicViewModel(
+                    repo = (this[APPLICATION_KEY] as AppApplication).container.foxPicRepo
+                )
             }
         }
     }

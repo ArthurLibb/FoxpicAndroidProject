@@ -4,7 +4,7 @@ import android.app.Application
 import com.example.app.data.AppContainer
 import com.example.app.data.DefaultAppContainer
 
-class AppApplication: Application() {
+class AppApplication : Application() {
     lateinit var container: AppContainer
 
     override fun onCreate() {

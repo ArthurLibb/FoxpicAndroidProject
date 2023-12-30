@@ -12,7 +12,7 @@ interface AppContainer {
     val foxPicRepo: FoxPicRepository
 }
 
-class DefaultAppContainer(private val context: Context): AppContainer {
+class DefaultAppContainer(private val context: Context) : AppContainer {
     private val baseURL = "https://randomfox.ca/floof/?ref=apilist.fun"
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(

@@ -15,4 +15,3 @@ val GreenBlueDarkLess = Color(7, 168, 128, 255)
 
 val FoxRed = Color(198, 76, 54)
 val OrangeFox = Color(228, 119, 85, 255)
-

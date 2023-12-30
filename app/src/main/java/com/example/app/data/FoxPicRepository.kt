@@ -1,7 +1,6 @@
 package com.example.app.data
 
 import android.util.Log
-import com.example.app.database.asDomainFoxPic
 import com.example.app.database.asDomainFoxpics
 import com.example.app.database.asEntity
 import com.example.app.database.daos.FoxPicDao
@@ -13,7 +12,6 @@ import kotlinx.coroutines.flow.map
 import java.util.Date
 
 interface FoxPicRepository {
-    /*fun getFoxPic(id: String): Flow<FoxPic>*/
     suspend fun getFoxpics(): Flow<List<FoxPic>>
     suspend fun addFoxPic(foxpic: FoxPic)
     suspend fun deleteFoxPic(foxPic: FoxPic)
@@ -22,15 +20,9 @@ interface FoxPicRepository {
 
 class OfflineFoxPicRepository(
     private val foxPicDao: FoxPicDao,
-    private val foxPicSerivice : FoxPicService
-) : FoxPicRepository{
-    /*override fun getFoxPic(id : String): Flow<FoxPic>{
-            return foxPicDao.getFoxPic(id.toInt()).map{
-                it.asDomainFoxPic()
-            }
-    }*/
-
-    override suspend fun addFoxPic(foxPic: FoxPic){
+    private val foxPicSerivice: FoxPicService
+) : FoxPicRepository {
+    override suspend fun addFoxPic(foxPic: FoxPic) {
         AddFoxPicTORoomDb(foxPic)
     }
 
@@ -38,7 +30,7 @@ class OfflineFoxPicRepository(
         foxPicDao.deleteFoxPic(foxPic.asEntity())
     }
 
-    override suspend fun getRandomFoxPic(): Flow<FoxPic>  {
+    override suspend fun getRandomFoxPic(): Flow<FoxPic> {
         Log.d("repo", "getting random foxpic")
         return foxPicSerivice.getAsFlow().map { FoxPic("", it.image, Date()) }
     }
@@ -50,7 +42,7 @@ class OfflineFoxPicRepository(
         }
     }
 
-    private suspend fun AddFoxPicTORoomDb(foxPic: FoxPic){
+    private suspend fun AddFoxPicTORoomDb(foxPic: FoxPic) {
         foxPicDao.addFoxPic(foxPic.asEntity())
     }
 }

@@ -10,12 +10,8 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FoxPicDao {
-
-    /*@Query("SELECT * FROM foxpics WHERE id = :id")
-    fun getFoxPic(id : Int): Flow<FoxPicEntity>*/
-
     @Delete
-    suspend fun deleteFoxPic(foxpic : FoxPicEntity)
+    suspend fun deleteFoxPic(foxpic: FoxPicEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addFoxPic(foxPic: FoxPicEntity): Long

@@ -1,10 +1,10 @@
 package com.example.app.ui.addPicScreen
 
-data class FoxPicState (
-    val linkImage  : String ="",
+data class FoxPicState(
+    val linkImage: String = ""
 )
 
-sealed interface RandomFoxPicApiState{
+sealed interface RandomFoxPicApiState {
     object Succes : RandomFoxPicApiState
     object Loading : RandomFoxPicApiState
     object Error : RandomFoxPicApiState

@@ -10,21 +10,17 @@ import com.example.app.ui.addPicScreen.AddFoxPicSreen
 import com.example.app.ui.overviewScreen.FoxPicOverview
 
 @Composable
-fun navComponent(navController: NavHostController, modifier: Modifier){
+fun navComponent(navController: NavHostController, modifier: Modifier) {
     NavHost(
         navController = navController,
         startDestination = OverviewScreen.Start.name,
         modifier = modifier
-    )
-    {
-        composable(route = OverviewScreen.Start.name){
+    ) {
+        composable(route = OverviewScreen.Start.name) {
             Log.i("Nav", "nav to overview")
             FoxPicOverview()
         }
-        /*composable(route = OverviewScreen.Detail.name){
-            Text("Detail")
-        }*/
-        composable(route = OverviewScreen.AddFoxPic.name){
+        composable(route = OverviewScreen.AddFoxPic.name) {
             Log.i("vm navigation", "Nev to addFoxPic")
             AddFoxPicSreen()
         }
