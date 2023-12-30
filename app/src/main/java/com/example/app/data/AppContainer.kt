@@ -9,22 +9,21 @@ import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 
 interface AppContainer {
-    val foxPicRepo : FoxPicRepository
+    val foxPicRepo: FoxPicRepository
 }
 
-class DefaultAppContainer(private val context: Context) : AppContainer{
+class DefaultAppContainer(private val context: Context): AppContainer {
     private val baseURL = "https://randomfox.ca/floof/?ref=apilist.fun"
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(
             Json.asConverterFactory("application/json".toMediaType())
         ).baseUrl(baseURL).build()
 
-    private val retrofitService : FoxPicService by lazy {
+    private val retrofitService: FoxPicService by lazy {
         retrofit.create(FoxPicService::class.java)
     }
 
     override val foxPicRepo: FoxPicRepository by lazy {
         OfflineFoxPicRepository(RoomDB.getInstance(context = context).foxPicDao(), retrofitService)
     }
-
 }

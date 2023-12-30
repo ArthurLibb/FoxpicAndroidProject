@@ -7,7 +7,6 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import androidx.navigation.NavController
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import com.example.app.ui.AndroidApp
@@ -16,14 +15,14 @@ import org.junit.Rule
 import org.junit.Test
 
 class NavigationTest {
-    private val nameFoxPic : String = "name foxpic"
+    private val nameFoxPic: String = "name foxpic"
 
-    @get:Rule
+    @get: Rule
     val composeTestRule = createComposeRule()
     lateinit var navController: TestNavHostController
 
     @Before
-    fun setupNavHost(){
+    fun setupNavHost() {
         composeTestRule.setContent {
             navController = TestNavHostController(LocalContext.current)
             navController.navigatorProvider.addNavigator(ComposeNavigator())
@@ -32,7 +31,7 @@ class NavigationTest {
     }
 
     @Test
-    fun startDestination(){
+    fun startDestination() {
         composeTestRule.waitForIdle()
         composeTestRule
             .onNodeWithText("Overview")
@@ -40,7 +39,7 @@ class NavigationTest {
     }
 
     @Test
-    fun navigateToAdd(){
+    fun navigateToAdd() {
         composeTestRule
             .onNodeWithContentDescription("add buttons")
             .performClick()
@@ -50,7 +49,7 @@ class NavigationTest {
     }
 
     @Test
-    fun clickAddPic(){
+    fun clickAddPic() {
         composeTestRule
             .onNodeWithContentDescription("add buttons")
             .performClick()
@@ -63,7 +62,7 @@ class NavigationTest {
     }
 
     @Test
-    fun clickRefresh(){
+    fun clickRefresh() {
         composeTestRule
             .onNodeWithContentDescription("add buttons")
             .performClick()
@@ -76,7 +75,7 @@ class NavigationTest {
     }
 
     @Test
-    fun canAddFoxPic(){
+    fun canAddFoxPic() {
         composeTestRule
             .onNodeWithContentDescription("add buttons")
             .performClick()

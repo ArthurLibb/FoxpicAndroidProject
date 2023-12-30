@@ -1,7 +1,4 @@
-package com.example.app.ui.AddPicScreen
-
-import com.example.app.model.FoxPic
-import java.util.Date
+package com.example.app.ui.addPicScreen
 
 data class FoxPicState (
     val linkImage  : String ="",

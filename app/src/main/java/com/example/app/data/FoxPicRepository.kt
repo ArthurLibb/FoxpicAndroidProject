@@ -12,15 +12,18 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.util.Date
 
-interface FoxPicRepository{
+interface FoxPicRepository {
     /*fun getFoxPic(id: String): Flow<FoxPic>*/
-    fun getFoxpics(): Flow<List<FoxPic>>
-    suspend fun addFoxPic(foxpic : FoxPic)
+    suspend fun getFoxpics(): Flow<List<FoxPic>>
+    suspend fun addFoxPic(foxpic: FoxPic)
     suspend fun deleteFoxPic(foxPic: FoxPic)
     suspend fun getRandomFoxPic(): Flow<FoxPic>
 }
 
-class OfflineFoxPicRepository (private val foxPicDao: FoxPicDao, private val foxPicSerivice : FoxPicService) : FoxPicRepository{
+class OfflineFoxPicRepository(
+    private val foxPicDao: FoxPicDao,
+    private val foxPicSerivice : FoxPicService
+) : FoxPicRepository{
     /*override fun getFoxPic(id : String): Flow<FoxPic>{
             return foxPicDao.getFoxPic(id.toInt()).map{
                 it.asDomainFoxPic()
@@ -35,13 +38,12 @@ class OfflineFoxPicRepository (private val foxPicDao: FoxPicDao, private val fox
         foxPicDao.deleteFoxPic(foxPic.asEntity())
     }
 
-
     override suspend fun getRandomFoxPic(): Flow<FoxPic>  {
         Log.d("repo", "getting random foxpic")
         return foxPicSerivice.getAsFlow().map { FoxPic("", it.image, Date()) }
     }
 
-    override fun getFoxpics(): Flow<List<FoxPic>> {
+    override suspend fun getFoxpics(): Flow<List<FoxPic>> {
         Log.d("repo", "getting all pics")
         return foxPicDao.getAll().map {
             it.asDomainFoxpics()

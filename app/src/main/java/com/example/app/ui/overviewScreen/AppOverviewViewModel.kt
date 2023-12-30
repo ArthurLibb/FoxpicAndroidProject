@@ -38,13 +38,15 @@ class AppOverviewViewModel(private val repo : FoxPicRepository) : ViewModel(){
     private fun getFoxPics(){
         apiState = FoxApiState.Loading
         try{
-            foxpicListState = repo.getFoxpics().map {
-                FoxPicListState(it)
-            }.stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000L),
-                initialValue = FoxPicListState())
-
+            viewModelScope.launch {
+                foxpicListState = repo.getFoxpics().map {
+                    FoxPicListState(it)
+                }.stateIn(
+                    scope = viewModelScope,
+                    started = SharingStarted.WhileSubscribed(5_000L),
+                    initialValue = FoxPicListState()
+                )
+            }
             apiState = FoxApiState.Succes
         }catch(e :IOException){
             apiState = FoxApiState.Error

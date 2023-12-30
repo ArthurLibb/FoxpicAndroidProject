@@ -1,4 +1,4 @@
-package com.example.app.ui.AddPicScreen
+package com.example.app.ui.addPicScreen
 
 import android.util.Log
 import androidx.lifecycle.viewmodel.initializer
@@ -23,7 +23,8 @@ import kotlinx.coroutines.launch
 import java.util.Date
 
 class AddFoxPicViewModel(private val repo : FoxPicRepository,
-                         private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO) : ViewModel() {
+                         private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO)
+    : ViewModel() {
 
     private val _uifoxPicState = MutableStateFlow(FoxPicState())
     val uifoxPicState : StateFlow<FoxPicState> = _uifoxPicState.asStateFlow()
@@ -66,7 +67,8 @@ class AddFoxPicViewModel(private val repo : FoxPicRepository,
     companion object{
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                AddFoxPicViewModel(repo = (this[APPLICATION_KEY] as AppApplication).container.foxPicRepo)
+                AddFoxPicViewModel(repo = (this[APPLICATION_KEY] as AppApplication)
+                    .container.foxPicRepo)
             }
         }
     }
