@@ -7,9 +7,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class FakeFoxPicRepository : FoxPicRepository {
-    override suspend fun getFoxpics(): Flow<List<FoxPic>> = flow {
-        FakeDataSource.pics.map {
-            it.asDomainFoxPic()
+    var datasource = FakeDataSource
+    override suspend fun getFoxpics(): Flow<List<FoxPic>> {
+        return flow {
+            emit(datasource.pics.map { it.asDomainFoxPic() })
         }
     }
 

@@ -17,6 +17,5 @@ object FakeDataSource {
         FoxPicEntity(nameOne, linkOne, dateOne),
         FoxPicEntity(nameTwo, linkTwo, dateTwo)
     )
-
     val randomPic = ApiFoxPic("", linkOne)
 }
