@@ -88,7 +88,8 @@ fun FoxPicComposable(
                     model = pic.link,
                     contentDescription = pic.name,
                     onSuccess = { imageLoading.value = false },
-                    onLoading = { imageLoading.value = true }
+                    onLoading = { imageLoading.value = true },
+                    onError = {"You have no internet connection"}
                 )
             }
             Row(modifier = Modifier.padding(start = 15.dp, end = 15.dp)) {
