@@ -37,6 +37,7 @@ import coil.compose.AsyncImage
 import com.example.app.ui.components.AddPicDialog
 import com.example.app.ui.theme.OrangeFox
 
+
 @Composable
 fun AddFoxPicSreen(
     viewmodel: AddFoxPicViewModel = viewModel(factory = AddFoxPicViewModel.Factory),
@@ -91,6 +92,7 @@ fun AddPicComponent(
     onRefresh: () -> Unit
 ) {
     val loading = remember { mutableStateOf(true) }
+
     Card(
         modifier = modifier
             .clip(RoundedCornerShape(4.dp))
@@ -124,7 +126,7 @@ fun AddPicComponent(
                     contentDescription = "async fox image",
                     modifier = Modifier.fillMaxWidth(),
                     onSuccess = { loading.value = false },
-                    onLoading = { loading.value = true }
+                    onLoading = { loading.value = true },
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))

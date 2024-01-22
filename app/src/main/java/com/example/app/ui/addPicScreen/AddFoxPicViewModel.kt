@@ -31,7 +31,6 @@ class AddFoxPicViewModel(
     val uifoxPicState: StateFlow<FoxPicState> = _uifoxPicState.asStateFlow()
 
     var apiState: RandomFoxPicApiState by mutableStateOf(RandomFoxPicApiState.Loading)
-        private set
 
     init {
         getNewFoxPic()
